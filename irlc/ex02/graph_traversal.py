@@ -30,17 +30,23 @@ class SmallGraphDP(DPModel):
     def f(self, x, u, w, k):
         if (x,u) in self.G:  
             # TODO: 1 lines missing.
-            raise NotImplementedError("Implement function body")
+            # raise NotImplementedError("Implement function body")
+            return u
         else:
             raise Exception("Nodes are not connected")
 
     def g(self, x, u, w, k): 
         # TODO: 1 lines missing.
-        raise NotImplementedError("Implement function body")
-
+        # raise NotImplementedError("Implement function body")
+        return self.G[(x,u)]
+        
     def gN(self, x):  
         # TODO: 1 lines missing.
-        raise NotImplementedError("Implement function body")
+        # raise NotImplementedError("Implement function body")
+        if x == self.t:
+            return 0
+        else: 
+            return np.inf
 
     def S(self, k):   
         return self.nodes

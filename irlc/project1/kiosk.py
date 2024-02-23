@@ -30,27 +30,49 @@ def plot_policy(pi, title, pdf):
     plt.show()
 
 # TODO: 51 lines missing.
-raise NotImplementedError("Insert your solution and remove this error.")
-
-def warmup_states(): 
+class KioskDPModel(DPModel):
+    def __init__(self, N = 14):
+        super().__init__(N=N)
+        
+    def A(self, x, k):
+        return list(range(16))
+    
+    def S(self, k):
+        return list(range(21))
+    
+    def g(self, x, u, w, k):
+        return 1.5*u - min(x + u, w)*2.1
+    
+    def f(self, x, u, w, k):
+        return max(0, min(20, x - w + u))
+    
+    def Pw(self, x, u, k):
+        return {0: 0.3, 3: 0.6, 6: 0.1}
+    
+    def gN(self, x):
+        return 0
+    
+    
+def warmup_states():
     # TODO: 1 lines missing.
-    raise NotImplementedError("return state set")
-
-def warmup_actions(): 
+    return KioskDPModel().S(0)
+    
+def warmup_actions():
     # TODO: 1 lines missing.
-    raise NotImplementedError("return action set")
+    return KioskDPModel().A(None, 0)
+
 
 def solve_kiosk_1(): 
     # TODO: 1 lines missing.
-    raise NotImplementedError("Return cost and policy here (same format as DP_stochastic)")
+    return DP_stochastic(KioskDPModel())
 
 def solve_kiosk_2(): 
     # TODO: 1 lines missing.
-    raise NotImplementedError("Return cost and policy here (same format as DP_stochastic)")
-
-
+    return DP_stochastic(KioskDPModel())
+    
+    
 def main():
-    # Problem 14
+    # Problem 15
     print("Available states S_0:", warmup_states())
     print("Available actions A_0(x_0):", warmup_actions())
 
