@@ -1,0 +1,107 @@
+\documentclass[12pt,twoside]{article}
+%\usepackage[table]{xcolor} % important to avoid options clash.
+%\input{02465shared_preamble}
+%\usepackage{cleveref}
+\usepackage{url}
+\usepackage{graphics}
+\usepackage{multicol}
+\usepackage{rotate}
+\usepackage{rotating}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{pifont}
+\usepackage{latexsym}
+\usepackage[english]{babel}
+\usepackage{epstopdf}
+\usepackage{etoolbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multirow,epstopdf}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\newcommand\redt[1]{ {\textcolor[rgb]{0.60, 0.00, 0.00}{\textbf{ #1} } } }
+
+
+\newcommand{\m}[1]{\boldsymbol{ #1}}
+\newcommand{\yoursolution}{ \redt{(your solution here) } } 
+
+
+
+\title{ Report 1 hand-in }
+\date{ \today }
+\author{Alice (\texttt{s000001})\and  Bob (\texttt{s000002})\and Clara (\texttt{s000003}) } 
+
+\begin{document}
+\maketitle
+
+\begin{table}[ht!]
+\caption{Attribution table. Feel free to add/remove rows and columns}
+\begin{tabular}{llll}
+\toprule
+                                                        & Alice   & Bob    & Clara   \\
+\midrule
+ 1: A basic blaster-business                            & 0-100\%  & 0-100\% & 0-100\%  \\
+ 2: Warmup                                              & 0-100\%  & 0-100\% & 0-100\%  \\
+ 3: Manually computing $J_{N-1}$                        & 0-100\%  & 0-100\% & 0-100\%  \\
+ 4: Compute optimal policy and value function           & 0-100\%  & 0-100\% & 0-100\%  \\
+ 5: Kiosk2                                              & 0-100\%  & 0-100\% & 0-100\%  \\
+ 6: Explaining the policy                               & 0-100\%  & 0-100\% & 0-100\%  \\
+ 7: Policy explanation continued                        & 0-100\%  & 0-100\% & 0-100\%  \\
+ 8: Go east                                             & 0-100\%  & 0-100\% & 0-100\%  \\
+ 9: Describe the go-east problem                        & 0-100\%  & 0-100\% & 0-100\%  \\
+ 10: Predict consequence of actions                     & 0-100\%  & 0-100\% & 0-100\%  \\
+ 11: Possible future states                             & 0-100\%  & 0-100\% & 0-100\%  \\
+ 12: Shortest path                                      & 0-100\%  & 0-100\% & 0-100\%  \\
+ 13: Predict consequence of actions with one ghost      & 0-100\%  & 0-100\% & 0-100\%  \\
+ 14: Possible future states with one ghost              & 0-100\%  & 0-100\% & 0-100\%  \\
+ 15: Optimal one-ghost planning                         & 0-100\%  & 0-100\% & 0-100\%  \\
+ 16: Predict consequence of actions with several ghosts & 0-100\%  & 0-100\% & 0-100\%  \\
+ 17: Future states                                      & 0-100\%  & 0-100\% & 0-100\%  \\
+ 18: Optimal planning                                   & 0-100\%  & 0-100\% & 0-100\%  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%\paragraph{Statement about collaboration:}
+%Please edit this section to reflect how you have used external resources. The following statement will in most cases suffice: 
+%\emph{The code in the irls/project1 directory is entirely}
+
+%\paragraph{Main report:}
+Headings have been inserted in the document for readability. You only have to edit the part which says \yoursolution. 
+
+\section{The kiosk (\texttt{kiosk.py})}
+\subsubsection*{{\color{red}Problem 1:  A basic blaster-business}}
+
+\yoursolution 	
+\redt{To get you started: \begin{align}
+	N & = 14 \\
+	\mbox{for $k=0,\dots,N$: }\quad	\mathcal{S}_k & = \dots \\
+	\mbox{for $k=0,\dots,N-1$: }\quad \mathcal{A}_k(x_k) & = \dots \\
+	 & \vdots 
+\end{align} }
+
+\subsubsection*{{\color{red}Problem 3:  Manually computing $J_{N-1}$}}
+		
+	\yoursolution 	
+	$$
+	J_{N-1}(20)  = ...
+	$$
+	
+\subsubsection*{{\color{red}Problem 6:  Explaining the policy}}
+
+					The first policy... this can be explained by noting ... \yoursolution 
+
+\subsubsection*{{\color{red}Problem 7:  Policy explanation continued}}
+	
+	$$\mu_{N-1}(0) = ...$$
+\yoursolution 		
+
+\section{Avoid the droid (\texttt{pacman.py)}} 
+\subsubsection*{{\color{red}Problem 9:  Describe the go-east problem}}
+	
+		The environment is an example of a .... \\		
+		The controller is an example of a ...
+		\yoursolution 	
+	
+\end{document}

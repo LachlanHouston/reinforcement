@@ -1,0 +1,14 @@
+# REMEMBER TO apt install swig on linux; also on macos. 
+# apt install python3.12-dev
+# New requirements for 2024.
+gymnasium[box2d]
+sympy
+tqdm
+seaborn
+pillow
+scikit-learn
+matplotlib
+requests # Required when updating the local files (read stuff from gitlab).
+pyqt5
+pygame
+
