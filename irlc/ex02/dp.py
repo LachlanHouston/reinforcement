@@ -4,6 +4,7 @@ References:
   [Her24] Tue Herlau. Sequential decision making. (Freely available online), 2024.
 """
 from irlc.ex02.graph_traversal import SmallGraphDP
+# from irlc.ex02.graph_traversal import policy_rollout
 from irlc.ex02.dp_model import DPModel
 
 def DP_stochastic(model: DPModel): 
@@ -48,8 +49,11 @@ def DP_stochastic(model: DPModel):
             (for help, google: `python find key in dictionary with minimum value').
             Then you can use this to update J[k][x] = Q_umin and pi[k][x] = umin.
             """
-            # TODO: 4 lines missing.
-            raise NotImplementedError("Insert your solution and remove this error.")
+            for w in model.Pw(x, None, k):
+                Q = [q_u for q_u in model.A(x, k)]
+                umin = min(Q, key=lambda u: model.g(x, u, w, k) + J[k+1][model.f(x, u, w, k)])
+                J[k][x] = model.g(x, umin, w, k) + J[k+1][model.f(x, umin, w, k)]
+                pi[k][x] = umin
             """
             After the above update it should be the case that:
 
@@ -67,3 +71,8 @@ if __name__ == "__main__":  # Test dp on small graph given in (Her24, Subsection
     for k in range(len(J)):
         print(", ".join([f"J_{k}({i}) = {v:.1f}" for i, v in J[k].items()]))
     print(f"Cost of shortest path when starting in node 2 is: {J[0][2]=} (and should be 4.5)") 
+    # s = 2  # start node
+    # J,xp = policy_rollout(model, pi=lambda x, k: pi[k][x], x0=s)
+    # print(f"Actual cost of rollout was {J} which should obviously be similar to J_0[{s}]")
+    # print(f"Path was", xp)
+    # Remember to check optimal path agrees with the the (self-evident) answer from the figure.

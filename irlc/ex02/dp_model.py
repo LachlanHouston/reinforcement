@@ -34,14 +34,17 @@ class DPModel:
 
         This completes the note.
 
-    To actually use the model, you need to extend it and implement the methods. The basic recipe for this is something like::
+    To actually use the model, you need to extend it and implement the methods. The basic recipe for this is something like:
 
-        class MyDPModel(DPModel):
-            def f(self, x, u, w, k): # Note the `self`-variable. You can use it to access class variables such as`self.N`.
-                return x + u - w     # Just an example
-            def S(self, k):
-                return [0, 1, 2]    # State space S_k = {0, 1, 2}
-                # Implement the other functions A, g, gN and Pw here.
+    .. code-block:: python
+
+        print("Hello World")
+        # class MyFunkyModel(DPModel):
+        #     def f(self, x, u, w, k): # Note the `self`-variable. You can use it to access class variables such as`self.N`.
+        #         return x + u - w     # Just an example
+        #     def S(self, k):
+        #         return [0, 1, 2]    # State space S_k = {0, 1, 2}
+        #         # Implement the functions A, g, gN and Pw here.
 
 
     You should take a look at :func:`~irlc.ex02.inventory.InventoryDPModel` for a concrete example.
@@ -74,7 +77,8 @@ class DPModel:
         :param k: The current time step :math:`k`
         :return: The state the environment (deterministically) transitions to, i.e. :math:`x_{k+1}`
         """
-        raise NotImplementedError("Return f_k(x,u,w)")
+        # raise NotImplementedError("Return f_k(x,u,w)")
+        return x + u - w
 
     def g(self, x, u, w, k: int) -> float:
         """
@@ -86,7 +90,8 @@ class DPModel:
         :param k: The current time step :math:`k`
         :return: The cost (as a ``float``) incurred by the environment, i.e. :math:`g_k(x, u, w)`
         """
-        raise NotImplementedError("Return g_k(x,u,w)")
+        #raise NotImplementedError("Return g_k(x,u,w)")
+        return 2
 
     def gN(self, x) -> float:
         """
@@ -95,7 +100,8 @@ class DPModel:
         :param x: A state seen at the last time step :math:`x_N`
         :return: The terminal cost (as a ``float``) incurred by the environment, i.e. :math:`g_N(x)`
         """
-        raise NotImplementedError("Return g_N(x)")
+        # raise NotImplementedError("Return g_N(x)")
+        return 2
 
     def S(self, k: int):
         """
@@ -109,7 +115,8 @@ class DPModel:
         :param k: The current time step :math:`k`
         :return: The state space (as a ``list`` or ``set``) available at time step ``k``, i.e. :math:`\mathcal S_k`
         """
-        raise NotImplementedError("Return state space as set S_k = {x_1, x_2, ...}")
+        # raise NotImplementedError("Return state space as set S_k = {x_1, x_2, ...}")
+        return {i+1 for i in range(k)}
 
     def A(self, x, k: int):
         """
@@ -124,7 +131,9 @@ class DPModel:
         :param x: The state we want to compute the actions in :math:`x_k`
         :return: The action space (as a ``list`` or ``set``) available at time step ``k``, i.e. :math:`\mathcal A_k(x_k)`
         """
-        raise NotImplementedError("Return action space as set A(x_k) = {u_1, u_2, ...}")
+        # raise NotImplementedError("Return action space as set A(x_k) = {u_1, u_2, ...}")
+        # Return the action space A_k(x) at time step k in state x.
+        return {i+1 for i in range(k)}
 
     def Pw(self, x, u, k: int):
         """
@@ -160,7 +169,7 @@ class DPModel:
         """
         # Compute and return the random noise disturbances here.
         # As an example:
-        return {'w_dummy': 1/3, 42: 2/3}  # P(w_k="w_dummy") = 1/3, P(w_k =42)=2/3. 
+        return {0: 1/3, 1: 2/3}  # P(w_k="w_dummy") = 1/3, P(w_k =42)=2/3. 
 
     def w_rnd(self, x, u, k): 
         """
