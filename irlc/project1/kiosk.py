@@ -30,7 +30,7 @@ def plot_policy(pi, title, pdf):
     plt.show()
 
 # TODO: 51 lines missing.
-class KioskDPModel(DPModel):
+class KioskDPModel1(DPModel):
     def __init__(self, N = 14):
         super().__init__(N=N)
         
@@ -51,24 +51,51 @@ class KioskDPModel(DPModel):
     
     def gN(self, x):
         return 0
+
+""" As it turns out, the previous plan was way to to naive and failed to take two important
+factors into account
+• The demand for blasters actually resemble a binomial distribution. The chance
+that w = 0, . . . , ns blasters are bought in a given day is
+p(w) = (ns,w)*p^w*(1-p)^(ns-w)
+.
+Where ns is the storage space. Using historical data you determine that p = 1/5
+.
+• When you dispose of excess blasters (i.e., blasters that you are not allowed to
+store over night) you have to obey the pesky imperial environmental protection
+act regarding safe handling of dedlanite and bla bla bla. Anyway, it costs 3
+credits to dispose of a single excess blaster.
+Implement these rules in solve_kiosk_2() and check how it affects your profits"""
+
+
+class KioskDPModel2(KioskDPModel1):
+    def Pw(self, x, u, k):
+        return {w: binom.pmf(w, 20, 1/5) for w in range(21)}
+    
+    def g(self, x, u, w, k):
+        dispose = 0
+        if x > 20:
+            dispose = 3*(x -20)
+        else:
+            dispose = 0
+        return 1.5*u - min(x + u, w)*2.1 + dispose*3
     
     
 def warmup_states():
     # TODO: 1 lines missing.
-    return KioskDPModel().S(0)
+    return KioskDPModel1().S(0)
     
 def warmup_actions():
     # TODO: 1 lines missing.
-    return KioskDPModel().A(None, 0)
+    return KioskDPModel1().A(None, 0)
 
 
 def solve_kiosk_1(): 
     # TODO: 1 lines missing.
-    return DP_stochastic(KioskDPModel())
+    return DP_stochastic(KioskDPModel1())
 
 def solve_kiosk_2(): 
     # TODO: 1 lines missing.
-    return DP_stochastic(KioskDPModel())
+    return DP_stochastic(KioskDPModel2())
     
     
 def main():
