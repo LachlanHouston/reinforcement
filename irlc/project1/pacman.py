@@ -71,16 +71,24 @@ class PacManDPModel(DPModel):
         return 0
     
 class PacmanDPModelWithGhosts(PacManDPModel): 
-    # Override some functions.
-
-    def g(self, x, u, w, k): # Cost function g_k(x,u,w) 
+    def g(self, x, u, w, k):
         return 0
 
-    def f(self, x, u, w, k): # Dynamics f_k(x,u,w)
+    def f(self, x, u, w, k):
         return w
 
     def gN(self, x): 
         return -1 if x.is_won() else 0
+    
+def next_ghost(x, states, prob, ghosts): # Recursive function to calculate the probability of each state given the number of ghosts
+        if ghosts == 0:
+            states[x] += prob
+            return
+        
+        actions = x.A()
+        prob /= len(actions)
+        for u in actions:
+            next_ghost(x.f(u), states, prob, ghosts-1)
 
 def p_next(x, u): 
     """ Given the agent is in GameState x and takes action u, the game will transition to a new state xp.
@@ -101,18 +109,10 @@ def p_next(x, u):
     x = x.f(u)  # Pacman's turn (deterministic)
     states = defaultdict(float)  # Defaults to 0.0
     
-    # Multiple ghosts call recursively until no ghosts left.
-    def next_ghost(x, prob, ghosts):
-        if ghosts == 0:         # Terminal state, no ghosts left
-            states[x] += prob
-            return
-        
-        actions = x.A()
-        prob /= len(actions)
-        for u in actions:
-            next_ghost(x.f(u), prob, ghosts-1)
-    
-    next_ghost(x, 1.0, x.players() - 1)
+    # If there are no ghosts, the probability of the next state is 1.0
+    # If there are ghosts, we need to calculate the probability of each state
+    next_ghost(x, states, 1, x.players() - 1)
+
     return states
 
 
@@ -135,21 +135,21 @@ def go_east(map):
     env = PacmanEnvironment(layout_str=map)
     x, _ = env.reset()
     states = [x]
+
     while not (x.is_won() or x.is_lost()): # Continue until we win or lose
-        x = x.f("East")
-        states.append(x)
-        print(x.is_won(), x.is_lost())
+        x = x.f("East") # Move east
+        states.append(x) # Add the new state to the list
     return states
 
 def get_future_states(x, N): 
     # TODO: 4 lines missing.
-    state_spaces = [[x]]
-    for _ in range(N):
-        state_spaces.append([])
-        for x in state_spaces[-2]:
-            for u in x.A():
-                for xp, p in p_next(x, u).items():
-                    if p > 0.0 and xp not in state_spaces[-1]:  # __eq__ is defined in GameState
+    state_spaces = [[x]] # List of lists. The first list contains the initial state.
+    for _ in range(N): # For each time step on the planning horizon
+        state_spaces.append([]) # Add a new empty list to state_spaces
+        for x in state_spaces[-2]: # For each state in the previous time step
+            for u in x.A(): # For each action in the state
+                for xp, p in p_next(x, u).items(): # For each next state and probability
+                    if p > 0.0 and xp not in state_spaces[-1]:  # If the state is new, add it to the list
                         state_spaces[-1].append(xp)
     return state_spaces
 
@@ -157,8 +157,8 @@ def win_probability(map, N=10):
     """ Assuming you get a reward of -1 on winning (and otherwise zero), the win probability is -J_pi(x_0). """
     env = PacmanEnvironment(layout_str=map)
     x, _ = env.reset()
-    pac = PacmanDPModelWithGhosts(x, N)
-    J, pi_ = DP_stochastic(pac)
+    pac = PacmanDPModelWithGhosts(x, N) # Create a model for the DP problem
+    J, pi_ = DP_stochastic(pac) # Solve the DP problem
     return -J[0][x]
 
 def shortest_path(map, N=10): 
@@ -171,18 +171,18 @@ def shortest_path(map, N=10):
     x, _ = env.reset()
     pac_model = PacManDPModel(x, N)
 
-    agent = DynamicalProgrammingAgent(env, pac_model)
+    agent = DynamicalProgrammingAgent(env, pac_model) # Create a DP agent
     actions = []
-    states = [x]
+    states = [x] # Add the initial state to the list
 
     for k in range(N):
         if x.is_won() or x.is_lost():
             break
-        u = agent.pi(x, k)
-        x = x.f(u)
-        env.step(u)
-        actions.append(u)
-        states.append(x)
+        u = agent.pi(x, k) # Get the action from the policy
+        x = x.f(u) # Move to the next state
+        env.step(u) # Take the action
+        actions.append(u) # Add the action to the list
+        states.append(x) # Add the new state to the list
 
     env.close()
     return actions, states
@@ -243,6 +243,6 @@ def two_ghosts():
     print("Two ghosts:", win_probability(SS2tiny, N=12))
 
 if __name__ == "__main__":
-    # no_ghosts()
+    no_ghosts()
     one_ghost()
     two_ghosts()
