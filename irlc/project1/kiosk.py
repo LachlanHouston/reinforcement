@@ -52,20 +52,6 @@ class KioskDPModel1(DPModel):
     def gN(self, x):
         return 0
 
-""" As it turns out, the previous plan was way to to naive and failed to take two important
-factors into account
-• The demand for blasters actually resemble a binomial distribution. The chance
-that w = 0, . . . , ns blasters are bought in a given day is
-p(w) = (ns,w)*p^w*(1-p)^(ns-w)
-.
-Where ns is the storage space. Using historical data you determine that p = 1/5
-.
-• When you dispose of excess blasters (i.e., blasters that you are not allowed to
-store over night) you have to obey the pesky imperial environmental protection
-act regarding safe handling of dedlanite and bla bla bla. Anyway, it costs 3
-credits to dispose of a single excess blaster.
-Implement these rules in solve_kiosk_2() and check how it affects your profits"""
-
 
 class KioskDPModel2(KioskDPModel1):
     def Pw(self, x, u, k):
